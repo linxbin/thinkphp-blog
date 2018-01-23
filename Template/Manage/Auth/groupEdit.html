@@ -1,0 +1,31 @@
+<script type="text/javascript">
+    layui.config({
+        base: "{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'], function(){
+        var layer = layui.layer,
+                form = layui.form(),
+                func = layui.func,
+                $ = layui.jquery;
+        /*
+         *ajax请求
+         **/
+        $("[event=edit]").click(function () {
+            var key = $(this).parents('tr').attr('key'),
+                    group = $.dataSource.navs[key],
+                    formTpl = $("[event=formTpl]");
+            func.layerOpen('编辑分组',formTpl.html(),'editTpl');
+            var $edit = $('#editTpl');
+            $edit.find("input[name='title']").val(group.title);
+            $edit.find("input[name='status']").filter("[value=" + group.status + "]").click();
+            $edit.find("input[name='id']").val(group.id);
+            $edit.find('[event=submit]').attr('lay-filter','edit');
+            $edit.find('[event=submit]').html('编辑');
+            form.render();
+        });
+
+        form.on('submit(edit)',function (data) {
+            func.ajax("{:U('groupEdit')}",data.field);
+            return false;
+        });
+    });
+</script>

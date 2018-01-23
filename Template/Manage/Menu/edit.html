@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    layui.config({
+        base: "{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'], function(){
+        var layer = layui.layer,
+                form = layui.form(),
+                func = layui.func,
+                $ = layui.jquery;
+        /*
+        *ajax请求
+        **/
+        $("[event=edit]").click(function () {
+            var key = $(this).parents('tr').attr('key'),
+                menu = $.dataSource.navs[key],
+                formTpl = $("[event=formTpl]");
+            func.layerOpen('编辑系统菜单',formTpl.html(),'editTpl');
+            var $edit = $('#editTpl');
+            $edit.find("input[name='name']").val(menu.name);
+            $edit.find("input[name='controller']").val(menu.controller);
+            $edit.find("input[name='action']").val(menu.action);
+            $edit.find("input[name='sort']").val(menu.sort);
+            $edit.find("input[name='id']").val(menu.id);
+            $edit.find("option[value="+menu.pid+"]").attr("selected","selected");
+            $edit.find("input[name='status']").filter("[value=" + menu.status + "]").click();
+            $edit.find('[event=submit]').attr('lay-filter','edit');
+            $edit.find('[event=submit]').html('编辑');
+            form.render();
+        });
+
+        form.on('submit(edit)',function (data) {
+            func.ajax("{:U('menu/edit')}",data.field);
+            return false;
+        });
+    });
+</script>

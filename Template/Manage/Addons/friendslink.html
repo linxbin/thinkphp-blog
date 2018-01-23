@@ -1,0 +1,157 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <button href="" event="add" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+        &nbsp;
+        <button event="dropBath" class="layui-btn layui-btn-small layui-btn-danger">
+            <i class="layui-icon">&#xe640;</i> 批量删除
+        </button>
+        <div class="layui-form">
+            <table id="listTable" class="site-table table-hover" event="table">
+                <thead>
+                <tr>
+                    <th width="6%">序号</th>
+                    <th width="6%"><input type="checkbox" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th width="20%">名称</th>
+                    <th>链接</th>
+                    <th width="20%">创建时间</th>
+                    <th width="15%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="list" id="data">
+                    <tr key="{$key}">
+                        <input type="hidden" name="id" value="{$data.id}"/>
+                        <td>{$i + calculatePage($_GET['p'])}</td>
+                        <td><input type="checkbox" data="checkbox" lay-skin="primary"></td>
+                        <td>{$data.name}</td>
+                        <td>{$data.url}</td>
+                        <td>{$data.time|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <button event="edit" class="layui-btn layui-btn-mini">编辑</button>
+                            <button event="del" class="layui-btn layui-btn-mini layui-btn-danger">删除</button>
+                        </td>
+
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div event="formTpl" class="layui-hide">
+        <form class="layui-form form-content" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">链接</label>
+                <div class="layui-input-block">
+                    <input type="text" name="url" required  lay-verify="required" placeholder="请输入链接" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <input type="hidden" name="id" value="" class="layui-input"/>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button event="submit" class="layui-btn" lay-submit lay-filter="add">添加</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        layui.config({
+            base: "{:C(JS_BASE_PATH)}"
+        }).use(['layer','form','func'], function(){
+            var layer = layui.layer,
+                form = layui.form(),
+                func = layui.func,
+                $ = layui.jquery;
+
+            $.dataSource = {};
+            $.dataSource.navs = $.parseJSON('{:json_encode($list)}');
+            /**
+             * 添加
+             * */
+            $("[event=add]").click(function () {
+                var formTpl;
+                formTpl = $("[event=formTpl]").html();
+                func.layerOpen('添加',formTpl,'editTpl');
+                form.render();
+            });
+
+            form.on('submit(add)',function (data) {
+                func.ajax("{:U('friendslinkAdd')}",data.field);
+                return false;
+            });
+
+
+            /*
+            编辑
+             */
+            $("[event=edit]").click(function () {
+                var key = $(this).parents('tr').attr('key'),
+                    datas = $.dataSource.navs[key],
+                    formTpl = $("[event=formTpl]");
+                func.layerOpen('编辑',formTpl.html(),'editTpl');
+                var $edit = $('#editTpl');
+                $edit.find("input[name='name']").val(datas.name);
+                $edit.find("input[name='url']").val(datas.url);
+                $edit.find("input[name='id']").val(datas.id);
+                $edit.find('[event=submit]').attr('lay-filter','edit');
+                $edit.find('[event=submit]').html('编辑');
+                form.render();
+            });
+
+            form.on('submit(edit)',function (data) {
+                func.ajax("{:U('friendslinkedit')}",data.field);
+                return false;
+            });
+
+
+            /**
+             * 删除
+             */
+            $("[event=del]").click(function () {
+                var key = $(this).parents('tr').attr('key'),
+                    nav = $.dataSource.navs[key];
+                var params = {
+                    id : nav.id
+                };
+                layer.confirm('确定删除该友情链接吗?',function () {
+                    func.ajax("{:U('friendslinkdrop')}",params);
+                });
+            });
+
+            $("[event=dropBath]").click(function () {
+                var datas = func.getSelectData('[data=checkbox]',$.dataSource.navs);
+                if(datas.length == 0){
+                    layer.msg('请选中要删除的友情链接');
+                    return false;
+                }
+                layer.confirm('确定删除选中的友情链接吗？',function () {
+                    var ids='',params;
+                    $.each(datas, function (key, data) {
+                        ids+=data.id+',';
+                    });
+                    params = {
+                        id: ids
+                    }
+                    func.ajax("{:U('friendslinkdrop')}",params);
+                })
+            })
+        });
+    </script>
+</block>
+
+
+

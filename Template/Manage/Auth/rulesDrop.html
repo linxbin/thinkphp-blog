@@ -1,0 +1,27 @@
+<script type="text/javascript" >
+    layui.config({
+        base:"{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'],function () {
+        var  layer = layui.layer,
+                form = layui.form(),
+                func = layui.func,
+                $ = layui.jquery;
+
+        $("[event=del]").click(function () {
+            var key = $(this).parents('tr').attr('key'),
+                    rule = $.dataSource.navs[key],
+                    confirm;
+            var params = {
+                id : rule.id
+            };
+            if(rule.children == 1 ) {
+                confirm = '删除该节点会同时删除其下级的节点，确定删除该条节点？';
+            } else {
+                confirm = '确定删除该条节点？'
+            }
+            layer.confirm(confirm,function () {
+                func.ajax("{:U('ruleDrop')}",params);
+            });
+        });
+    });
+</script>

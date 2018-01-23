@@ -1,0 +1,84 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div class="layui-tab" lay-filter="tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="11">接口配置</li>
+            <li lay-id="22">微信支付配置</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-field-box">
+                    <form class="layui-form" action="{:U('basic')}" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">URL地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_url" required  lay-verify="required" placeholder="服务器地址（必填）" value="{$WX_URL}" class="layui-input">
+                                <p class="help-block">
+                                    请复制此URL地址填写在公众号平台 [ 开发 >> 基本配置 ] 中 [ URL ( 服务器地址 ) ]<br>
+                                    <b>注意</b>：URL主域名必需备案，微信服务接口只支持 80 端口 ( http ) 和 443 端口 ( https )</p>
+                            </div>
+                        </div>
+                        <hr style="border:none;border-top:1px dashed #e7eaec; background: none ;padding: 10px 0;" />
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">AppID</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_appid" required  lay-verify="required" placeholder="公众号APPID（必填）" value="{$WX_APPID}" class="layui-input">
+                                <p class="help-block">
+                                    公众号应用ID是所有接口必要参数，可以在公众号平台 [ 开发 &gt;&gt; 基本配置 ] 页面获取。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">AppSecret</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="wx_appsecret" required  lay-verify="required" placeholder="公众号AppSecret（必填）" value="{$WX_APPSECRET}" class="layui-input">
+                                <p class="help-block">
+                                    公众号应用密钥是所有接口必要参数，可以在公众号平台 [ 开发 &gt;&gt; 基本配置 ] 页面授权后获取。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">Token (令牌)</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_token" required  lay-verify="required" placeholder="Token 令牌（必填）" value="{$WX_TOKEN}" class="layui-input">
+                                <p class="help-block">
+                                    公众号平台与系统对接认证Token，请优先填写此参数并保存，然后再在微信公众号平台操作对接。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">Encoding AESKey</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_encoding_aeskey" placeholder="消息加密密钥，若开启了消息加密时必需填写（可选）" value="{$WX_ENCODING_AESKEY}" class="layui-input">
+                                <p class="help-block">
+                                    公众号平台接口设置为加密模式，消息加密密钥必需填写并保持与公众号平台一致。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="submit" lay-submit lay-filter="confirm" class="layui-btn" value="提交">
+                                <input type="button" class="layui-btn layui-btn-primary" value="重置">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-field-box">
+                    <form class="layui-form" action="" method="post">
+                        开发待定
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        layui.use(['jquery','element'],function () {
+            var $ = layui.jquery;
+        })
+    </script>
+</block>

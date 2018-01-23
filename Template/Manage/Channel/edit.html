@@ -1,0 +1,38 @@
+<script type="text/javascript">
+    layui.config({
+        base: "{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'], function(){
+        var layer = layui.layer,
+                form = layui.form(),
+                func = layui.func,
+                $ = layui.jquery;
+        /*
+        *ajax请求
+        **/
+        $("[event=edit]").click(function () {
+            var key = $(this).parents('tr').attr('key'),
+                nav = $.dataSource.navs[key],
+                formTpl = $("[event=formTpl]");
+            func.layerOpen('编辑栏目',formTpl.html(),'editTpl');
+            var $edit = $('#editTpl');
+            $edit.find("select[name='mould']").attr('disabled',true);
+            $edit.find("input[name='title']").val(nav.title);
+            $edit.find("input[name='ename']").val(nav.ename);
+            $edit.find("input[name='keyword']").val(nav.keyword);
+            $edit.find("input[name='description']").val(nav.description);
+            $edit.find("input[name='sort']").val(nav.sort);
+            $edit.find("input[name='id']").val(nav.id);
+            $edit.find("option[value="+nav.mould+"]").attr("selected","selected");
+            $edit.find("input[name='display']").filter("[value=" + nav.display + "]").click();
+            $edit.find("input[name='status']").filter("[value=" + nav.status + "]").click();
+            $edit.find('[event=submit]').attr('lay-filter','edit');
+            $edit.find('[event=submit]').html('编辑');
+            form.render();
+        });
+
+        form.on('submit(edit)',function (data) {
+            func.ajax("{:U('edit')}",data.field);
+            return false;
+        });
+    });
+</script>

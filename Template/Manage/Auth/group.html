@@ -1,0 +1,44 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <button event="add" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+        <table id="listTable" class="site-table table-hover" style="table-layout:fixed;">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="groups" id="group">
+                <tr key={$key}>
+                    <td>{$group.title}</td>
+                    <td>{$group.create_time|date='Y-m-d H:i:s',###}</td>
+                    <td>
+                        <a href="{:U('apply',array('id'=>$group[id]))}"><input type="button" class="layui-btn layui-btn-mini layui-btn-warm" value="访问授权" ></a>
+                        <button event="edit" class="layui-btn layui-btn-mini">编辑</button>
+                        <button event="del" class="layui-btn layui-btn-mini layui-btn-danger">删除</button>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+    <include file="groupFormTpl"/>
+    <include file="groupAdd"/>
+    <include file="groupEdit"/>
+    <include file="groupDrop"/>
+</block>
+
+<block name="script">
+    <script>
+        layui.use(['jquery'],function () {
+            var $ = layui.jquery;
+            $.dataSource = {};
+            $.dataSource.navs = $.parseJSON('{:json_encode($groups)}');
+        });
+    </script>
+</block>

@@ -1,0 +1,35 @@
+<extend name="./Common/base" />
+
+<block name="title">
+    {$title} - <linxb:sitename/>
+</block>
+
+<block name="content">
+        <notempty name="list">
+            <volist name="list" id="article">
+                <div class="panel panel-default noborder padding-defined">
+                    <div class="panel-body">
+                        <h4 class="blue centered"><a href="{$article.url}">{$article.title}</a>
+                            <if condition="$article['top'] == 1">
+                                <span class="top">置顶</span>
+                            </if>
+                            <if condition="$article['hot'] == 1">
+                                <span class="hot">推荐</span>
+                            </if>
+                        </h4>
+                        <p class="centered index-time">{$article['time'] | date = "Y-m-d",###}</p>
+                    </div>
+                </div>
+            </volist>
+            <else />
+            <div class="panel panel-default noborder padding-defined">
+                <h2>查询无结果</h2>
+                <p>抱歉，没有符合您查询条件的结果。</p>
+            </div>
+        </notempty>
+
+
+    <div class="pagenavi">
+        {$page}
+    </div>
+</block>

@@ -1,0 +1,108 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <button event="backup" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe608;</i> 数据库备份
+        </button>
+        <button event="optimize" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe632;</i> 数据表优化
+        </button>
+        <button event="repair" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe62d;</i> 数据表修复
+        </button>
+        <a href="{:U('restore')}">
+            <button event="restore" class="layui-btn layui-btn-small">
+                <i class="layui-icon">&#xe620;</i> 还原管理
+            </button>
+        </a>
+    <hr>
+        <div class="layui-form">
+            <blockquote class="layui-elem-quote layui-quote-nm">数据库中共有{$tableNum}张表，共计{$total}</blockquote>
+            <form action="" method="post" id="form_do" name="form_do">
+                <table class="layui-table" lay-skin="line">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" id="check" lay-skin="primary" lay-filter="allChoose"></th>
+                        <th>表名</th>
+                        <th>表用途</th>
+                        <th>记录行数</th>
+                        <th>引擎</th>
+                        <th>字符集</th>
+                        <th>表大小</th>
+                        <th class="text-right">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <foreach name='vlist' item='v'>
+                        <tr>
+                            <td><input type="checkbox" name="key[]" value="{$v.name}" lay-skin="primary"></td>
+                            <td class="aleft">{$v.name}</td>
+                            <td>{$v.comment}</td>
+                            <td>{$v.rows}</td>
+                            <td>{$v.engine}</td>
+                            <td>{$v.collation}</td>
+                            <td>{$v.size}</td>
+                            <td class="text-right">
+                                <a href="{:U('optimize',array('tablename' => $v['name']), '')}" class="label label-info"><button type="button" class="layui-btn layui-btn-small layui-btn-normal">优化</button></a>
+                                <a href="{:U('repair',array('tablename' => $v['name']), '')}" class="label label-success"><button type="button" class="layui-btn layui-btn-small layui-btn-warm">修复</button></a>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        layui.config({
+            base: "{:C(JS_BASE_PATH)}"
+        }).use(['jquery','func','layer','form'],function () {
+            var $ = layui.jquery,
+                func = layui.func,
+                layer = layui.layer,
+                form = layui.form();
+
+            $("[event=optimize]").click(function () {
+                var datas = $('[type=checkbox]').filter(":checked");
+                if(datas.length == 0){
+                    layer.msg('请选中要优化的表');
+                    return false;
+                }
+                layer.confirm('确定优化选中的表吗？',function () {
+                    var form_do = document.getElementById("form_do");
+                    form_do.action = "{:U('optimize', array('batchFlag' => 1),'')}";
+                    form_do.submit();
+                })
+            });
+
+            $("[event=repair]").click(function () {
+                var datas = $('[type=checkbox]').filter(":checked");
+                if(datas.length == 0){
+                    layer.msg('请选中要修复的表');
+                    return false;
+                }
+                layer.confirm('确定修复选中的表吗？',function () {
+                    var form_do = document.getElementById("form_do");
+                    form_do.action = "{:U('repair', array('batchFlag' => 1))}";
+                    form_do.submit();
+                })
+            });
+
+            $("[event=backup]").click(function () {
+                var datas = $('[type=checkbox]').filter(":checked");
+                if(datas.length == 0){
+                    layer.msg('请选中要备份的表');
+                    return false;
+                }
+                layer.confirm('确定备份选中的表吗？',function () {
+                    var form_do = document.getElementById("form_do");
+                    form_do.action = "{:U('backup')}";
+                    form_do.submit();
+                })
+            });
+        });
+    </script>
+</block>

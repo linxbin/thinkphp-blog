@@ -1,0 +1,21 @@
+<script type="text/javascript" >
+    layui.config({
+        base:"{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'],function () {
+        var  layer = layui.layer,
+             form = layui.form(),
+             func = layui.func,
+             $ = layui.jquery;
+
+        $("[event=del]").click(function () {
+            var key = $(this).parents('tr').attr('key'),
+                    nav = $.dataSource.navs[key];
+            var params = {
+                id : nav.id
+            };
+            layer.confirm('确定删除该用户吗?',function () {
+                func.ajax("{:U('drop')}",params);
+            });
+        });
+    });
+</script>

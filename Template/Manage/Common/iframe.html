@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="__PUBLIC__/plugins/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/global.css" media="all">
+    <link rel="stylesheet" href="__PUBLIC__/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/table.css" />
+    <script type="text/javascript" src="__PUBLIC__/plugins/layui/layui.js"></script>
+
+    <block name="css">
+
+    </block>
+</head>
+<body>
+
+<block name="container">
+
+
+</block>
+
+</body>
+</html>
+<script type="text/javascript">
+    layui.config({
+        base: "{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'], function() {
+        var layer = layui.layer,
+                form = layui.form(),
+                func = layui.func,
+                $ = layui.jquery;
+        form.on('checkbox(allChoose)', function(data){
+            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            child.each(function(index, item){
+                item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+    });
+</script>
+
+
+<block name="script">
+
+</block>

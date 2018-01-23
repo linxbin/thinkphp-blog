@@ -1,0 +1,77 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <a href="{:U('index')}">
+            <button class="layui-btn layui-btn-small" type="button"><i class="layui-icon">&#xe603;</i>返回</button>
+        </a>
+            <button event="bathDrop" class="layui-btn layui-btn-small layui-btn-danger layui-btn-danger" type="button"><i class="layui-icon">&#xe640;</i>删除</button>
+        <hr>
+        <div class="layui-form">
+            <blockquote class="layui-elem-quote layui-quote-nm">Note:数据库备份文件大小共计{$total}</blockquote>
+            <form action="" method="post" id="form_do" name="form_do">
+                <table class="layui-table" lay-skin="line">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" id="check" lay-skin="primary" lay-filter="allChoose"></th>
+                        <th>文件名称</th>
+                        <th>文件大小</th>
+                        <th>备份时间</th>
+                        <th>卷号</th>
+                        <th class="text-right">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <foreach name='vlist' item='v'>
+                        <tr>
+                            <td><input type="checkbox" name="key[]" value="{$v.name}" lay-skin="primary"></td>
+                            <td class="aleft">{$v.name}</td>
+                            <td>{$v.size}</td>
+                            <td>{$v.time|date='Y-m-d H:i:s',###}</td>
+                            <td>{$v.number}</td>
+                            <td class="text-right">
+                                <a href="{:U('restoreData',array('sqlfilepre' => $v['pre']), '')}"><button type="button" class="layui-btn layui-btn-small layui-btn-normal">数据恢复</button></a>
+                                <a href="javascript:;" onclick="toConfirm('{:U('delSqlFiles',array('sqlfilename' => $v['name'],'tm' =>1), '')}', '确实要删除吗？')"><button type="button" class="layui-btn layui-btn-small layui-btn-danger">删除文件</button></a>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        layui.config({
+            base: "{:C(JS_BASE_PATH)}"
+        }).use(['jquery','func','layer','form'],function () {
+            var $ = layui.jquery,
+                func = layui.func,
+                layer = layui.layer,
+                form = layui.form();
+
+            $("[event=bathDrop]").click(function () {
+                var datas = $('[type=checkbox]').filter(":checked");
+                if (datas.length == 0) {
+                    layer.msg('请选中要删除的备份文件');
+                    return false;
+                }
+                layer.confirm('确定删除选中的备份吗？', function () {
+                    var form_do = document.getElementById("form_do");
+                    form_do.action = "{:U('delSqlFiles', array('batchFlag' => 1),'')}";
+                    form_do.submit();
+                })
+            });
+        });
+        function toConfirm(url, str){
+
+            layer.confirm(str, {
+                btn: ['确定', '取消'] //按钮
+            }, function() {
+                location.href  = url;
+            });
+
+        }
+    </script>
+</block>

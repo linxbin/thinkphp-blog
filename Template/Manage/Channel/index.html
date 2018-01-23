@@ -1,0 +1,67 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <button event="add" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+        <button event="dropBath" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe640;</i> 批量删除
+        </button>
+        <form action="{:U('Channel/index','','')}" method="post" style="display: inline">
+            <input value="{$Think.post.title}" name="title" type="text" class="layui-input-inline search-input" placeholder="请输入栏目标题" />
+            <button event="qeury" type="submit" class="layui-btn layui-btn-small">
+                <i class="layui-icon">&#xe615;</i> 查询
+            </button>
+        </form>
+        <div class="layui-form">
+            <table class="site-table table-hover" event="table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th><input type="checkbox" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th>标题</th>
+                    <th>别名(只能包含字母，数字)</th>
+                    <th>是否显示</th>
+                    <th>所属模型</th>
+                    <th>状态</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <volist name="channelList" id="channel">
+                    <tr key={$key}>
+                        <input type="hidden" name="id" value="{$channel.id}"/>
+                        <td>{$i + calculatePage($_GET['p'])}</td>
+                        <td><input type="checkbox" lay-skin="primary" data="checkbox" title=""></td>
+                        <td>{$channel.title}</td>
+                        <td>{$channel.ename}</td>
+                        <td>{$channel[display]?'是':'否'}</td>
+                        <td>{$channel.mould_name}</td>
+                        <td>{$channel[status]?'<span class="yes">开启</span>':'<span class="no">禁用</span>'}</td>
+                        <td>{$channel.sort}</td>
+                        <td>
+                            <button event="edit" class="layui-btn layui-btn-mini">编辑</button>
+                            <button event="del" class="layui-btn layui-btn-mini layui-btn-danger">删除</button>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+        </div>
+    </div>
+    <include file="formTpl"/>
+    <include file="drop"/>
+    <include file="add"/>
+    <include file="edit"/>
+    <include file="search"/>
+</block>
+
+<block name="script">
+    <script>
+        layui.use('jquery',function () {
+            var $ = layui.jquery;
+            $.dataSource = {};
+            $.dataSource.navs = $.parseJSON('{:json_encode($channelList)}');
+        })
+    </script>
+
+</block>

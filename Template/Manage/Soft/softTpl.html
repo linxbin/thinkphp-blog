@@ -1,0 +1,197 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <fieldset class="layui-elem-field">
+            <legend>添加软件</legend>
+            <div class="layui-field-box">
+                <form class="layui-form" action="" event="form" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" required  lay-verify="required" placeholder="请输入软件标题" value="{$data.title}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SEO关键词</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="keyword" required  placeholder="请输入关键词，用逗号隔开，最多5个哦" value="{$data.keyword}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SEO描述</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="description" required  placeholder="请输入SEO描述" value="{$data.description}" autocomplete="off"  class="layui-textarea">{$data.description}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">缩略图</label>
+                        <div class="layui-input-block">
+                            <div class="site-demo-upload">
+                                <empty name = "data['thumb']">
+                                    <img class="thumbImg" src="__PUBLIC__/admin/images/default.png">
+                                    <else />
+                                    <img class="thumbImg" src="{$data.thumb}">
+                                </empty>
+                                <div class="site-demo-upbar">
+                                    <input type="file" name="file" class="layui-upload-file" id="test">
+                                    <input class="hide" name="thumb" value="{$data.thumb}" type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发布人</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="author" required  placeholder="" value="{$data.author}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">所属栏目</label>
+                        <div class="layui-input-inline">
+                            <select name="channel_id" lay-verify="">
+                                <option value="">请选择</option>
+                                <volist name="channels" id="channel">
+                                    <option value="{$channel.id}">{$channel.title}</option>
+                                </volist>
+                            </select>
+                        </div>
+                        <label class="layui-form-label">语言</label>
+                        <div class="layui-input-inline">
+                            <select name="language" lay-verify="">
+                                <option value="">请选择</option>
+                                <option value="简体中文">简体中文</option>
+                                <option value="繁体中文">繁体中文</option>
+                                <option value="英文软件">英文软件</option>
+                                <option value="其他类型">其他类型</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">软件版本</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="version" required  placeholder="" value="{$data.version}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">软件大小</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="size" required  placeholder="" value="{$data.size}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">下载量</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="num" required  placeholder="" value="{$data.num}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">适用平台</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="platform" required  placeholder="" value="{$data.platform}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div id="download-list" >
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <button event="add-download" type="button" class=" layui-btn layui-btn-mini layui-btn-normal">
+                                <i class="layui-icon">&#xe61f;</i>下载列表
+                            </button>
+                        </div>
+                        <empty name="data['download']">
+                            <div class="download-top download layui-form-item">
+                                <label class="layui-form-label">下载地址</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="down_url" required  placeholder="请输入下载地址" value="" autocomplete="off" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">下载名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="down_name" required  placeholder="请输入下载名称" value="" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <else />
+                            <volist name="data['download']" id="download">
+                                <div class="download-top download layui-form-item">
+                                    <label class="layui-form-label">下载地址</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="down_url" required  placeholder="请输入下载地址" value="{$download.url}" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <label class="layui-form-label">下载名称</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="down_name" required  placeholder="请输入下载名称" value="{$download.name}" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </volist>
+                        </empty>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">软件说明</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="content" event="container" value=""/>
+                            <script name="content" type="text/plain" id="content">
+                            </script>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" event="submit" class="layui-btn" lay-submit lay-filter="add">发布</button>
+                            <a href=#" onClick="javascript:history.back(-1);">
+                                <button type="button"  class="layui-btn layui-btn-danger">返回</button>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="download-tpl hide">
+        <div class="download layui-form-item">
+            <label class="layui-form-label">下载地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="down_url" required  placeholder="请输入下载地址" value="" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">下载名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="down_name" required  placeholder="请输入下载名称" value="" autocomplete="off" class="layui-input">
+            </div>
+            <button event="drop-download" type="button" class="layui-btn layui-btn-mini layui-btn-danger drop-button">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+        </div>
+    </div>
+</block>
+
+
+<block name="script">
+    <script type="text/javascript">
+        layui.config({
+            base: "{:C(JS_BASE_PATH)}"
+        }).use(['jquery','func','layer','form','upload'],function () {
+            var $ = layui.jquery,
+                upload = layui.upload,
+                layer = layui.layer;
+
+            upload({
+                url: "{:U('Files/uploads')}"
+                ,success: function(res){
+                    if(res.respCode != 10000){
+                        layer.msg(res.respMsg);
+                        return false;
+                    }
+                    $('.thumbImg').attr('src',res.imageUrl);
+                    $("input[name=thumb]").val(res.imageUrl);
+                }
+            });
+
+            $('[event=add-download]').click(function () {
+                if($('.download').length >= 5){
+                    layer.msg('下载地址超过上限啦！！');
+                    return false;
+                }
+                var downloadHtml = $('.download-tpl').children().clone();
+                $('.download-top').after(downloadHtml);
+
+            });
+
+            $(document).on('click',"#download-list [event=drop-download]",function () {
+                $(this).parent('div').remove();
+            })
+        });
+    </script>
+</block>

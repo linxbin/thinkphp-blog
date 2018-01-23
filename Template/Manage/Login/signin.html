@@ -1,0 +1,63 @@
+<script type="text/javascript">
+    layui.config({
+        base:"{:C('JS_BASE_PATH')}"
+    }).use(['layer', 'form','func'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form(),
+                func = layui.func;
+
+        function signin() {
+            var url = "{:U('signin')}"
+                    , password = $("input[name='password']").val();
+
+            password = hex_md5(password);
+            var data = {};
+            data = {
+                account :  $("input[name='account']").val(),
+                password : password,
+                code : $("input[name='code']").val()
+            };
+
+            func.ajax(url, data, function (msg) {
+                if(msg.respCode !== 10000){
+                    layer.msg(msg.respMsg);
+                    $('#codeImg').trigger('click');
+                    return false;
+                }
+                layer.msg('登录成功');
+                setTimeout(function () {
+                    window.location.href="{:U('index/index')}";
+                }, 1000 );
+            });
+            return false;
+        }
+
+        form.on('submit(login)',function(){
+            signin();
+        });
+
+        $("[event=enterSubmit]").keyup(function (e) {
+            if (e.which == 13) {
+                signin();
+            }
+        });
+
+        form.verify({
+            account: function(value){
+                if(value.length < 1 ){
+                    return '账号不能为空';
+                }
+            }
+            ,password: [/(.+){6,12}$/, '密码必须6到12位']
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+            ,code : function(value) {
+                if(value.length < 1 ){
+                    return '验证码不能为空';
+                }
+            }
+        });
+    });
+</script>

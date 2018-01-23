@@ -1,0 +1,69 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <a href="{:U('add')}">
+            <button event="add" class="layui-btn layui-btn-small">
+                <i class="layui-icon">&#xe608;</i> 写文章
+            </button>
+        </a>
+        &nbsp;
+        <a href="{:U('draft')}">
+            <button href="" event="add" class="layui-btn layui-btn-small layui-btn-warm">
+                <i class="layui-icon">&#xe62a;</i> 草稿箱 ({$draftNum})
+            </button>
+        </a>
+        &nbsp;
+        <button event="dropBath" class="layui-btn layui-btn-small layui-btn-danger">
+            <i class="layui-icon">&#xe640;</i> 批量删除
+        </button>
+
+        <form action="{:U('Article/index','','')}" method="post" style="display: inline">
+            <input value="{$Think.post.title}" name="title" type="text" class="layui-input-inline search-input" placeholder="请输入文章标题" />
+            <button event="qeury" type="submit" class="layui-btn layui-btn-small">
+                <i class="layui-icon">&#xe615;</i> 查询
+            </button>
+        </form>
+
+
+        <div class="layui-form">
+            <table id="listTable" class="site-table table-hover" event="table">
+                <thead>
+                <tr>
+                    <th width="5%">序号</th>
+                    <th width="5%"><input type="checkbox" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th>标题</th>
+                    <th width="10%">所属栏目</th>
+                    <th width="6%">发布人</th>
+                    <th width="6%">浏览量</th>
+                    <th width="10%">发布时间</th>
+                    <th width="15%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="data" id="article">
+                    <tr key="{$key}">
+                        <input type="hidden" name="id" value="{$article.id}"/>
+                        <td>{$i + calculatePage($_GET['p'])}</td>
+                        <td><input type="checkbox" data="checkbox" lay-skin="primary"></td>
+                        <td>{$article.title}</td>
+                        <td>{$article.channel}</td>
+                        <td>{$article.author}</td>
+                        <td>{$article.pv}</td>
+                        <td>{$article.time|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <a href="{:U('edit',array('id'=>$article[id]))}"><input type="button" class="layui-btn layui-btn-mini" value="编辑" ></a>
+                            <button event="del" class="layui-btn layui-btn-mini layui-btn-danger">删除</button>
+                        </td>
+
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <include file="Common:page"/>
+</block>
+
+<block name="script">
+    <include file="drop"/>
+</block>

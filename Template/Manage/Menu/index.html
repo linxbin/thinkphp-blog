@@ -1,0 +1,85 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <button event="add" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+        <table id="listTable" class="site-table table-hover" style="table-layout:fixed;">
+            <thead>
+            <tr>
+                <th>菜单名称</th>
+                <th>控制器</th>
+                <th>方法</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="menuList" id="menu">
+                <if condition="($menu['pid'] eq 0) AND ($menu['children'] eq 0)">
+                    <tr key={$key} event="{$menu.pid}" class="leaf {$menu.pid}">
+                        <td>
+                    <elseif condition="($menu['pid'] neq 0) AND ($menu['children'] eq 0)"/>
+                    <tr key={$key} event="{$menu.pid}" class="leaf {$menu.pid}">
+                        <td>
+                            <for start="1" end="$menu.speed">
+                                <span class="text-indent"></span>
+                            </for>
+                            <span class="switch"></span>
+                    <elseif condition="($menu['pid'] eq 0) AND ($menu['children'] neq 0)"/>
+                    <tr key={$key} event="{$menu.pid}" class="outer {$menu.pid}">
+                        <td>
+                            <for start="1" end="$menu.speed">
+                                <span class="text-indent"></span>
+                            </for>
+                            <!--<span class="switch"></span>-->
+                    <else/>
+                    <tr key={$key} event="{$menu.pid}" class="outer {$menu.pid}">
+                        <td>
+                            <for start="1" end="$menu.speed">
+                                <span class="text-indent"></span>
+                            </for>
+                            <span class="switch"></span>
+                </if>
+                        <!--<span class="ico"></span>-->
+                        <span class="name">{$menu.name}</span>
+                        </td>
+                        <input type="hidden" name="id" value="{$menu.id}"/>
+                        <td>{$menu.controller}</td>
+                        <td>{$menu.action}</td>
+                        <td>{$menu[status] ?'<span class="yes">使用中</span>':'<span class="no">禁用</span>'}</td>
+                        <td>
+                            <button event="edit" class="layui-btn layui-btn-mini">编辑</button>
+                            <button event="del" class="layui-btn layui-btn-mini layui-btn-danger">删除</button>
+                        </td>
+                    </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+    <include file="formTpl"/>
+    <include file="drop"/>
+    <include file="add"/>
+    <include file="edit"/>
+    <include file="search"/>
+</block>
+
+<block name="script">
+    <script>
+        layui.use(['jquery'],function () {
+            var $ = layui.jquery;
+            $.dataSource = {};
+            $.dataSource.navs = $.parseJSON('{:json_encode($menuList)}');
+
+//        $(".switch").click(function(){
+//            var id = $(this).parents(".outer").find("input[name=id]").val();
+//            if($(this).parents(".outer").is(".open")){
+//                $(this).parents(".outer").removeClass("open").nextAll("."+id).css('display','none');
+//            }else{
+//                $(this).parents(".outer").addClass("open").nextAll("."+id).css('display','table-row');
+//            }
+//        });
+        })
+    </script>
+</block>
+

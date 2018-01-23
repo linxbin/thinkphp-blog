@@ -1,0 +1,111 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <button event="back" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe603;</i>返回
+        </button>
+        <fieldset class="layui-elem-field">
+            <legend>授权管理</legend>
+            <div class="layui-field-box">
+                <form event="addRules" action="{:U('apply')}" method="post">
+                    <volist name="ruleList" id="rule">
+                        <dl class="checkmod">
+                            <dt class="hd">
+                                <label class="checkbox">
+                                    <input class="auth_rules rules_all" type="checkbox" name="rules[]" value="{$rule.id}"  />{$rule.title}
+                                </label>
+                            </dt>
+                            <present name="rule['children']" >
+                                <dd class="bd">
+                                    <div class="rule_check">
+                                        <volist name="rule['children']" id="second_rule">
+                                            <div class="rule_check">
+                                                <div>
+                                                    <label class="checkbox">
+                                                        <input class="auth_rules rules_row" type="checkbox" name="rules[]" value="{$second_rule.id}"/>{$second_rule.title}
+                                                    </label>
+                                                </div>
+                                                <notempty name="second_rule['children']">
+                                                    <span class="divsion">&nbsp;</span>
+                                                    <span class="child_row">
+                                                <volist name="second_rule['children']" id="third_rule">
+                                                    <label class="checkbox">
+                                                    <input class="auth_rules" type="checkbox" name="rules[]"
+                                                           value="{$third_rule.id}"/>{$third_rule.title}
+                                                    </label>
+                                               </volist>
+                                           </span>
+                                                </notempty>
+                                            </div>
+                                        </volist>
+                                    </div>
+                                </dd>
+                            </present>
+                        </dl>
+                    </volist>
+                    <input type="hidden" name="id" value="{$Think.get.id}"/>
+                    <input type="submit" class="layui-btn" lay-submit event="accessAuth" lay-filter="applyRules"/>
+                    <a href="javascript:history.back();"  class="layui-btn layui-btn-danger">返回</a>
+                </form>
+            </div>
+        </fieldset>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        layui.config({
+            base: "{:C(JS_BASE_PATH)}"
+        }).use(['jquery','func','layer','form'],function () {
+            var $ = layui.jquery,
+                func = layui.func,
+                layer = layui.layer,
+                form = layui.form();
+            $.dataSource = $.parseJSON('{:json_encode($groups)}');
+
+            //表单提交
+            form.on('submit(applyRules)', function(){
+                var rulesId = [] , params = {} , id = '';
+                $("[event=addRules]").find("input:checked").each(function () {
+                    rulesId.push(this.value);
+                });
+                id = $("[event=addRules]").find("input[name='id']").val();
+                params = {
+                    rules:rulesId,
+                    id:id
+                };
+                func.ajax("{:U('apply')}",params);
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //获取已选规则
+            var rules = $.dataSource.rules;
+            $('.auth_rules').each(function(){
+                if( $.inArray(this.value,rules )>-1 ){
+                    $(this).prop('checked',true);
+                }
+                if(this.value==''){
+                    $(this).closest('span').remove();
+                }
+            });
+
+            //全选节点
+            $('.rules_all').on('change',function(){
+                $(this).closest('dl').find('dd').find('input').prop('checked',this.checked);
+            });
+            $('.rules_row').on('change',function(){
+                $(this).closest('.rule_check').find('.child_row').find('input').prop('checked',this.checked);
+            });
+
+            $('.rule_check').on('change',function () {
+                $(this).closest('.rules_row').find('input').prop('checked',this.checked);
+            });
+
+            //返回
+            $("[event=back]").click(function () {
+                history.back();
+            })
+        });
+
+    </script>
+</block>

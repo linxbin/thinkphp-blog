@@ -1,0 +1,26 @@
+/*table*/
+.site-table tbody tr td {text-align: left; height: 22px}
+.site-table th{text-align: left;}
+.site-table tbody tr td .layui-btn+.layui-btn{margin-left: 0px;}
+.admin-table-page {position: fixed;z-index: 19940201;bottom: 0;width: 100%;background-color: #eee;border-bottom: 1px solid #ddd;left: 0px;}
+.admin-table-page .page{padding-left:20px;}
+.admin-table-page .page .layui-laypage {margin: 6px 0 0 0;}
+.table-hover tbody tr:hover{ background-color: #EEEEEE; }
+
+.inner { display: none;  }
+.switch, .ico {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-image: url("http://www.gbtags.com/gb/networks/background/d0642682-f7aa-4c64-98c6-fbd320d52706.png");
+    vertical-align: text-top;
+    cursor: pointer;
+}
+.leaf .ico { background-position: -110px -31px;  }
+.outer .ico {background-position: -110px 0;}
+/*.outer.open .ico {background-position: -110px -15px;  }*/
+/*.outer .switch {background-position: -74px -18px;  }*/
+.leaf .switch {background-position: -56px -18px;  }
+/*.outer.open .switch {background-position: -92px -18px;  }*/
+.text-indent {display: inline-block;  width: 16px;}
+

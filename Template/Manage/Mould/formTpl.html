@@ -1,0 +1,42 @@
+<div event="formTpl" class="layui-hide">
+    <form class="layui-form form-content" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">模型名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="请输入模型名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">关联数据表</label>
+            <div class="layui-input-block">
+                <input type="text" name="tablename" required  lay-verify="required" placeholder="填写附加表名（无需写表前缀）" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">模型描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="description" required  lay-verify="required" placeholder="请输入模型描述" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value=1 title="是" checked>
+                <input type="radio" name="status" value=0 title="否">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序(0-99)</label>
+            <div class="layui-input-block input-small">
+                <input type="text" name="sort" required  lay-verify="required"  value="0" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <input type="hidden" name="id" value="" class="layui-input"/>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button event="submit" class="layui-btn" lay-submit lay-filter="add">添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>

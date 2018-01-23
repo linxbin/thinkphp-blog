@@ -1,0 +1,45 @@
+<script type="text/javascript" >
+    layui.config({
+        base:"{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'],function () {
+        var  layer = layui.layer,
+             form = layui.form(),
+             func = layui.func,
+             $ = layui.jquery;
+
+        $("[event=del]").click(function () {
+            var key = $(this).parents('tr').attr('key'),
+                    menu = $.dataSource.navs[key],
+                    confirmCode;
+            var params = {
+                id : menu.id
+            };
+            if($(this).parents('tr').is(".outer")){
+                confirmCode = '删除该条菜单会同时删除其下级的菜单，确定删除该条菜单？';
+            }else{
+                confirmCode = '确定删除该菜单吗?';
+            }
+            layer.confirm(confirmCode,function () {
+                func.ajax("{:U('drop')}",params);
+            });
+        });
+
+        $("[event=dropBath]").click(function () {
+            var datas = func.getSelectData('[data=checkbox]',$.dataSource.navs);
+            if(datas.length == 0){
+                layer.msg('请选中要删除的菜单');
+                return false;
+            }
+            layer.confirm('确定删除选中的菜单吗？',function () {
+                var ids='',params;
+                $.each(datas, function (key, data) {
+                    ids+=data.id+',';
+                });
+                params = {
+                    id: ids
+                }
+                func.ajax("{:U('drop')}",params);
+            })
+        })
+    });
+</script>

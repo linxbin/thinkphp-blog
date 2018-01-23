@@ -1,0 +1,65 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <a href="{:U('add')}">
+            <button href="" event="add" class="layui-btn layui-btn-small">
+                <i class="layui-icon">&#xe608;</i> 添加软件
+            </button>
+        </a>
+        &nbsp;
+        <button event="dropBath" class="layui-btn layui-btn-small layui-btn-danger">
+            <i class="layui-icon">&#xe640;</i> 批量删除
+        </button>
+        <div class="layui-form">
+            <table id="listTable" class="site-table table-hover" event="table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th><input type="checkbox" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th>软件图片</th>
+                    <th>软件名称</th>
+                    <th>所属栏目</th>
+                    <th>发布人</th>
+                    <th>下载量</th>
+                    <th>发布时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="softlist" id="soft">
+                    <tr key="{$key}">
+                        <input type="hidden" name="id" value="{$soft.id}"/>
+                        <td>{$i + calculatePage($_GET['p'])}</td>
+                        <td><input type="checkbox" data="checkbox" lay-skin="primary"></td>
+                        <td><img class="thumbImg-mini" src="{$soft.thumb}"/></td>
+                        <td>{$soft.title}</td>
+                        <td>{$soft.channel}</td>
+                        <td>{$soft.author}</td>
+                        <td>{$soft.num}</td>
+                        <td>{$soft.time|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <a href="{:U('edit',array('id'=>$soft[id]))}"><input type="button" class="layui-btn layui-btn-mini" value="编辑" ></a>
+                            <button event="del" class="layui-btn layui-btn-mini layui-btn-danger">删除</button>
+                        </td>
+
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <include file="drop"/>
+    <include file="Common:page"/>
+</block>
+
+
+<block name="script">
+    <script>
+        layui.use('jquery',function () {
+            var $ = layui.jquery;
+            $.dataSource = {};
+            $.dataSource.soft = $.parseJSON('{:json_encode($softlist)}');
+        })
+    </script>
+</block>

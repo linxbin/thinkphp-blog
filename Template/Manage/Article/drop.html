@@ -1,0 +1,33 @@
+<script type="text/javascript" >
+    layui.config({
+        base:"{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'],function () {
+        var  layer = layui.layer,
+             func = layui.func,
+             $ = layui.jquery;
+
+        $("[event=del]").click(function () {
+            var id = $(this).parents('tr').find("input[name=id]").val();
+            var params = {
+                id : id
+            };
+            layer.confirm('确定删除该文章吗?',function () {
+                func.ajax("{:U('drop')}",params);
+            });
+        });
+
+        $("[event=dropBath]").click(function () {
+            var ids = func.getSelectId();
+            if(ids.length == 0) {
+                layer.msg('请选中要删除的文章');
+                return false;
+            }
+            layer.confirm('确定删除选中的文章吗？',function () {
+                var params = {
+                    id: ids
+                };
+                func.ajax("{:U('drop')}",params);
+            });
+        })
+    });
+</script>

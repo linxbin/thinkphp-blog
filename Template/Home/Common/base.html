@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<block name='description'></block>">
+    <meta name="keyword" content="<block name='keyword'></block>" >
+    <link rel="shortcut icon" href="__PUBLIC__/home/img/user.png">
+
+    <title>
+        <block name="title">
+
+        </block>
+    </title>
+
+    <link href="__PUBLIC__/home/css/bootstrap.css" rel="stylesheet">
+    <link href="__PUBLIC__/home/css/main.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <block name="css"></block>
+</head>
+
+<body>
+
+
+<block name="logo">
+    <div id="ww">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 centered">
+                    <img class="userlogo" src="__PUBLIC__/home/img/logo.png" alt="linxb">
+                    <h1 class="blue"> 聆听 </h1>
+                    <div class="slogan">
+                        <h4 class="green">JUST DO IT !</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<div id="nav">
+    <div class="container">
+        <div class="navbar navbar-default navbar-inverse " role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">聆听</a>
+
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <linxb:navlist typeid='0'>
+                        <li><a href="/{$navlist.ename}">{$navlist.title}</a></li>
+                    </linxb:navlist>
+                </ul>
+                <form class="navbar-form navbar-right" role="search" action="{:U('/search','','')}" method="GET">
+                    <div class="form-group">
+                        <a href="{:U('/rss')}"> <img class="rss" src="__PUBLIC__/home/img/rss.png"/></a>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="keyword" class="form-control width_auto" placeholder="输入查询内容" id="search" value="{:I('get.keyword')}" />
+                        <input type="submit" class="btn btn-danger" value="搜索">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="grey">
+    <div class="container">
+        <div class="row">
+            <block name="content">
+                <!-- 内容 -->
+            </block>
+        </div>
+    </div>
+</div>
+
+<block name="footer">
+    <div class="footerbar">
+        <div id="link">
+            <span>友情链接：</span>
+            <a href="/" title="Mukti's Blog" target="_blank">无</a>
+
+            <a style="margin-left: 20px;" href="http://www.miibeian.gov.cn" target="_blank"><linxb:beian/></a>
+        </div>
+        <div class="m-cprt">
+            © 2011-2017 <a href="/">Linxb</a>
+            &nbsp;|&nbsp;
+            Powered by <linxb:copyright/>
+            <script src="https://s13.cnzz.com/z_stat.php?id=1271192058&web_id=1271192058" language="JavaScript"></script>
+        </div>
+    </div>
+</block>
+
+<script src="__PUBLIC__/home/js/bootstrap.min.js"></script>
+<block name="script"> </block>
+</body>
+</html>

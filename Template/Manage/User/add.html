@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    layui.config({
+        base: "{:C(JS_BASE_PATH)}"
+    }).use(['layer','form','func'], function(){
+        var layer = layui.layer,
+            form = layui.form(),
+            func = layui.func,
+            $ = layui.jquery;
+        $("[event=add]").click(function () {
+            var formTpl;
+            formTpl = $("[event=formTpl]").html();
+            func.layerOpen('添加用户',formTpl,'editTpl');
+            form.render();
+        });
+
+        form.on('submit(add)',function (data) {
+            func.ajax("{:U('add')}",data.field);
+            return false;
+        });
+    });
+</script>

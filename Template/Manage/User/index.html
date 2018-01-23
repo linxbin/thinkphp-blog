@@ -1,0 +1,54 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <button event="add" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+        <table id="listTable" class="site-table table-hover" style="table-layout:fixed;">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>所属分组</th>
+                <th>最近登录时间</th>
+                <th>登录次数</th>
+                <th>登录ip</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="users" id="user">
+                    <tr key="{$key}">
+                        <input type="hidden" name="id" value="{$user.id}"/>
+                        <td>{$user.name}</td>
+                        <td>{$user.title}</td>
+                        <td>{$user.login_time|date='Y-m-d H:i:s',###}</td>
+                        <th>{$user.login_num}</th>
+                        <th>{$user.login_ip}</th>
+                        <td>{$user[status] == 1 ?'<span class="yes">开启</span>':'<span class="no">禁止</span>'}</td>
+                        <td>{$user.create_time|date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <button event="edit" class="layui-btn layui-btn-mini">编辑</button>
+                            <button event="del" class="layui-btn layui-btn-mini layui-btn-danger">删除</button>
+                        </td>
+
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+    <include file="add"/>
+    <include file="edit"/>
+    <include file="drop"/>
+    <include file="formTpl"/>
+</block>
+<block name="script">
+    <script>
+        layui.use('jquery',function () {
+            var $ = layui.jquery;
+            $.dataSource = {};
+            $.dataSource.navs = $.parseJSON('{:json_encode($users)}');
+        })
+    </script>
+</block>

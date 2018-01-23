@@ -1,0 +1,48 @@
+<div event="formTpl" class="layui-hide">
+    <form class="layui-form form-content" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-block">
+                <select name="parentId" lay-verify="">
+                    <option value="0">顶级菜单</option>
+                    <volist name="menuSelect" id="menu">
+                        <option value="{$menu.id}">|-{$menu.name}</option>
+                    </volist>
+                </select>
+
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">控制器</label>
+            <div class="layui-input-block">
+                <input type="text" name="controller" required  lay-verify="required" placeholder="首字母大写" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">方法</label>
+            <div class="layui-input-block">
+                <input type="text" name="action" required  lay-verify="required" placeholder="全部小写" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value=1 title="开启" checked>
+                <input type="radio" name="status" value=0 title="禁用">
+            </div>
+        </div>
+        <input type="hidden" name="id" value="" class="layui-input"/>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button event="submit" class="layui-btn" lay-submit lay-filter="add">添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>

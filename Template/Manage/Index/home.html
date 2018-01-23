@@ -1,0 +1,17 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+	<div class="admin-main">
+		<table class="site-table table-hover">
+			<volist name="data" id="info">
+				<tr>
+					<td>{$key}</td>
+					<td>{$info}</td>
+				</tr>
+			</volist>
+		</table>
+		<div class="admin-table-page">
+			<div id="page" class="page">
+			</div>
+		</div>
+	</div>
+</block>

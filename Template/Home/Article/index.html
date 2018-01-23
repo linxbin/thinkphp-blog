@@ -1,0 +1,80 @@
+<extend name="./Common/base" />
+
+<block name="keyword">{$article.keyword}</block>
+
+<block name="description">{$article.description}</block>
+
+<block name="css">
+	<link rel="stylesheet" href="__PUBLIC__/plugins/markdown/css/editormd.css" />
+	<style>
+		#content li{
+			list-style:disc;
+		}
+	</style>
+</block>
+
+
+<block name="title">
+	{$article.title} - <linxb:sitename/>
+</block>
+
+<block name="content">
+		<div class="panel panel-default noborder padding-defined">
+			<div class="panel-body">
+				<h4 class="blue centered"><a href="">{$article.title}</a></h4>
+				<div   class="centered content-info">
+					<ul>
+						<li>{$article['author']}</li>
+						<li>发表于：{$article['time'] | date = "Y-m-d",###} </li>
+						<li>阅读：{$article['pv']}</li>
+					</ul>
+				</div>
+				<div class="content" id="content">
+					<textarea style="display:none;" name="editormd-markdown-doc">{$article['content']}</textarea>
+				</div>
+
+				<div class="content-info">
+					<ul>标签：
+						<volist name="article['tags']" id="tag">
+							<li><a href="/search?keyword={$tag}">{$tag}</a></li>
+						</volist>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default noborder padding-defined">
+			<!-- UY BEGIN -->
+			<div id="uyan_frame"></div>
+			<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+			<!-- UY END -->
+		</div>
+
+</block>
+
+<block name="script">
+	<script src="__PUBLIC__/plugins/markdown/lib/marked.min.js"></script>
+	<script src="__PUBLIC__/plugins/markdown/lib/prettify.min.js"></script>
+	<script src="__PUBLIC__/plugins/markdown/lib/raphael.min.js"></script>
+	<script src="__PUBLIC__/plugins/markdown/lib/underscore.min.js"></script>
+	<script src="__PUBLIC__/plugins/markdown/lib/sequence-diagram.min.js"></script>
+	<script src="__PUBLIC__/plugins/markdown/lib/flowchart.min.js"></script>
+	<script src="__PUBLIC__/plugins/markdown/lib/jquery.flowchart.min.js"></script>
+	<script src="__PUBLIC__/plugins/markdown/editormd.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function() {
+            editormd.markdownToHTML("content", {
+                htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                emoji           : true,
+                taskList        : true,
+                tex             : true,  // 默认不解析
+                flowChart       : true,  // 默认不解析
+                sequenceDiagram : true,  // 默认不解析
+                tocm : true,//菜单
+                tocContainer : "",
+                tocDropdown   : false
+            });
+
+        })
+	</script>
+
+</block>

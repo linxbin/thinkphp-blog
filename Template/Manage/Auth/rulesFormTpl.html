@@ -1,0 +1,24 @@
+<div event="formTpl" class="layui-hide">
+    <form class="layui-form form-content" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">控制器\方法</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="请输入控制器\方法" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <input type="hidden" name="id" value="" class="layui-input"/>
+        <input type="hidden" name="pid" value="0" class="layui-input"/>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button event="submit" class="layui-btn" lay-submit lay-filter="add">添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>

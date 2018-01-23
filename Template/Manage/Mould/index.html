@@ -1,0 +1,57 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div id="container">
+        <button event="add" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe608;</i> 添加模型
+        </button>
+        <button event="dropBath" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe640;</i> 批量删除
+        </button>
+        <div class="layui-form">
+            <table class="site-table table-hover" event="table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th><input type="checkbox" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th>模型名称</th>
+                    <th>数据表</th>
+                    <th>启动</th>
+                    <th>描述</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <volist name="mouldList" id="data">
+                    <tr key={$key}>
+                        <input type="hidden" name="id" value="{$data.id}"/>
+                        <td>{$i + calculatePage($_GET['p'])}</td>
+                        <td><input type="checkbox" lay-skin="primary" data="checkbox" title=""></td>
+                        <td>{$data.name}</td>
+                        <td>{$data.tablename}</td>
+                        <td>{$data[status]?'<span class="yes">是</span>':'<span class="no">否</span>'}</td>
+                        <td>{$data.description}</td>
+                        <td>{$data.sort}</td>
+                        <td>
+                            <button event="edit" class="layui-btn layui-btn-mini">编辑</button>
+                            <button event="del" class="layui-btn layui-btn-mini layui-btn-danger">删除</button>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+        </div>
+    </div>
+    <include file="add"/>
+    <include file="edit"/>
+    <include file="formTpl"/>
+    <include file="drop"/>
+</block>
+
+<block name="script">
+    <script>
+        layui.use('jquery',function () {
+            var $ = layui.jquery;
+            $.dataSource = {};
+            $.dataSource.data = $.parseJSON('{:json_encode($mouldList)}');
+        })
+    </script>
+</block>

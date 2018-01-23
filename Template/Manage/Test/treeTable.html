@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <link href="/Template/Admin/Test/jquery.treetable.css" rel="stylesheet" type="text/css"/>
+    <link href="/Template/Admin/Test/jquery.treetable.theme.default.css" rel="stylesheet"/>
+    <script src="/Template/Admin/Test/jquery-3.1.1.min.js"></script>
+    <script src="/Template/Admin/Test/jquery.treetable.js"></script>
+</head>
+<body>
+
+<table id="example-basic-expandable" class="treetable">
+    <tr data-tt-id="0" >
+        <td>app</td>
+        <td>app</td>
+        <td>app</td>
+    </tr>
+    <tr data-tt-parent-id="0" data-tt-id="1">
+        <td>controllers</td>
+        <td>controllers</td>
+        <td>controllers</td>
+    </tr>
+    <tr data-tt-parent-id="1" data-tt-id="5">
+        <td>applicati</td>
+        <td>applicati</td>
+        <td>applicati</td>
+    </tr>
+    <tr data-tt-parent-id="0" data-tt-id="2">
+        <td>helpers</td>
+        <td>helpers</td>
+        <td>helpers</td>
+    </tr>
+    <tr data-tt-parent-id="0" data-tt-id="3">
+        <td>models</td>
+        <td>models</td>
+        <td>models</td>
+    </tr>
+    <tr data-tt-parent-id="0" data-tt-id="4">
+        <td>views</td>
+        <td>views</td>
+        <td>views</td>
+    </tr>
+</table>
+</body>
+<script>
+    $("#example-basic-expandable").treetable({
+        expandable: true
+    });
+</script>
+</html>

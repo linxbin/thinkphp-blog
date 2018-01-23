@@ -1,0 +1,26 @@
+<extend name="./Common/base" />
+
+<block name="title">
+	{$title} - <linxb:sitename/>
+</block>
+
+<block name="content">
+	<linxb:artlist cid="$id" pagesize = '10'>
+		<div class="panel panel-default noborder padding-defined">
+			<div class="panel-body">
+				<h4 class="blue centered"><a href="{$artlist.url}">{$artlist.title}</a>
+					<if condition="$artlist['top'] == 1">
+						<span class="top">置顶</span>
+					</if>
+					<if condition="$artlist['hot'] == 1">
+						<span class="hot">推荐</span>
+					</if>
+				</h4>
+				<p class="centered index-time">{$artlist['time'] | date = "Y-m-d",###}</p>
+			</div>
+		</div>
+	</linxb:artlist>
+	<div class="pagenavi">
+		{$page}
+	</div>
+</block>

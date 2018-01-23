@@ -1,0 +1,86 @@
+<include file="articleTpl"/>
+<style>
+    .result_content{
+        list-style:circle inside;
+    }
+</style>
+<block name="script">
+    <script type="text/javascript">
+        layui.config({
+            base: "{:C(JS_BASE_PATH)}"
+        }).use(['jquery','func','layer','form'],function () {
+            var $ = layui.jquery,
+                func = layui.func,
+                layer = layui.layer,
+                form = layui.form();
+
+            $(function() {
+                testEditor = editormd("test-editormd", {
+                    width        : "100%",//宽度
+                    height       : 720,//高度
+                    // 下面三个选项是设置风格的，每个有什么风格，请看下载插件得examples/themes.html
+                    theme        : "lesser-dark",// 工具栏风格
+                    previewTheme : "default",// 预览页面风格
+                    editorTheme  : "default",// 设置编辑页面风格
+                    path         : '__PUBLIC__/plugins/markdown/lib/',//这块是lib的文件路径，必须设置，否则几个样式css，js访问不到的
+                    flowChart : true,//控制流程图编辑
+                    sequenceDiagram : true,//控制时序图编辑
+                    taskList : true,//任务列表
+                    tex  : true,//科学公式
+                    emoji : true,//moji表情
+                    htmlDecode : "style,script,iframe|on*", // 开启 HTML 标签解析，为了安全性，默认不开启
+                    codeFold : true,//ctrl+q代码折叠
+//                                    saveHTMLToTextarea : true,//这个配置在simple.html中并没有，但是为了能够提交表单，使用这个配置可以让构造出来的HTML代码直接在第二个隐藏的textarea域中，方便post提交表单。这个转换好像有些缺陷，有些配置没有生效，目前还没想到怎么解决，我这里没有用,是在前台读取的时候转换的
+                    imageUpload : true,//开启本地图片上传
+                    imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL : "__PUBLIC__/plugins/markdown/examples/php/upload.php",//图片上传地址
+                    onload : function() {
+                    }
+                });
+            });
+
+            window.onbeforeunload = function() {
+                return "确认离开当前页面吗？未保存的数据将会丢失";
+            };
+
+            var $edit = $("[event=articForm]");
+            $edit.find("select[name=channel_id]").val("{$data[channel_id]}");
+            $edit.find("input[name='hot']").filter("[value={$data[hot]}]").attr("checked","checked");
+            $edit.find("input[name='top']").filter("[value={$data[top]}]").attr("checked","checked");
+            $edit.find('[event=submit]').attr('lay-filter','edit');
+            $edit.find('[event=submit]').html('发布');
+            form.on("submit(edit)",function (val) {
+                var params = val.field;
+                params.id = "{$data[id]}";
+                func.ajax("{:U('edit')}",params,function (msg) {
+                    if(msg.respCode !== 10000){
+                        layer.msg(msg.respMsg);
+                        return false;
+                    }
+                    window.onbeforeunload = null;
+                    layer.msg('文章编辑成功！');
+                    setTimeout(function () {
+                        window.location.href="{:U(index)}";
+                    },"1000")
+                })
+            });
+
+            form.on("submit(draft)",function (data) {
+                var params = data.field;
+                params.id = "{$data[id]}";
+                func.ajax("{:U(draft)}",params,function (msg) {
+                    if(msg.respCode !== 10000){
+                        layer.msg(msg.respMsg);
+                        return false;
+                    }
+                    window.onbeforeunload = null;
+                    layer.msg('已保存到草稿箱！');
+                    setTimeout(function () {
+                        window.location.href="{:U(draft)}";
+                    },"1000")
+                })
+            });
+            form.render();
+        });
+    </script>
+</block>

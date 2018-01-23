@@ -1,0 +1,60 @@
+<include file="Common:iframe_header"/>
+<include file="softTpl"/>
+<div id="editContent" style="display: none;">
+    {$data.content}
+</div>
+<include file="Common:iframe_footer"/>
+<script type="text/javascript" src="__PUBLIC__/plugins/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/plugins/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+    layui.config({
+        base: "{:C(JS_BASE_PATH)}"
+    }).use(['jquery','func','layer','form'],function () {
+        var $ = layui.jquery,
+                func = layui.func,
+                layer = layui.layer,
+                form = layui.form();
+        var ur = UE.getEditor('content');
+        var content = $('#editContent').html();
+        if(content){
+            ur.ready(function() {
+                this.setContent(content);
+            });
+
+        }
+        var $edit = $("[event=form]"),dropButtonTpl;
+        $edit.find(".download-top:not('.download-top:first')").each(function () {
+            dropButtonTpl = $('.download-tpl').find('button').clone();
+            $(this).removeClass("download-top").append(dropButtonTpl);
+        });
+
+        $edit.find("select[name=channel_id]").val("{$data[channel_id]}");
+        $edit.find("select[name=language]").val("{$data[language]}");
+        $edit.find('[event=submit]').attr('lay-filter','edit');
+        $edit.find('[event=submit]').html('编辑');
+        form.on("submit(edit)",function (val) {
+            var download=[] , obj;
+            $('#download-list').find('.download').each(function () {
+                obj =  {
+                    url : $(this).find("input[name=down_url]").val(),
+                    name : $(this).find("input[name=down_name]").val()
+                };
+                download.push(obj);
+            });
+            var params = val.field;
+            params.id = "{$data[id]}";
+            params.download = download;
+            func.ajax("{:U('edit')}",params,function (msg) {
+                if(msg.respCode !== 10000){
+                    layer.msg(msg.respMsg);
+                    return false;
+                }
+                layer.msg('软件编辑成功！');
+                setTimeout(function () {
+                    window.location.href="{:U(index)}";
+                },"1000")
+            })
+        });
+        form.render();
+    });
+</script>

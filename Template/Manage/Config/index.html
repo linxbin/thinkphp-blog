@@ -1,0 +1,120 @@
+<extend name="./Common/iframe"/>
+<block name="container">
+    <div class="layui-tab" lay-filter="tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="11">站点配置</li>
+            <li lay-id="22">核心配置</li>
+            <li lay-id="33">上传配置</li>
+            <li lay-id="44">会员配置</li>
+            <li lay-id="55">其他配置</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-field-box">
+                    <form class="layui-form" action="" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">网站标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="web_title" required  lay-verify="required" placeholder="请输入网站标题" value="{$WEB_TITLE}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">SEO关键词</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="web_key" required  lay-verify="required" placeholder="请输入SEO关键词" value="{$WEB_KEY}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">SEO说明</label>
+                            <div class="layui-input-block">
+                                <textarea type="text" name="web_description" placeholder="请输入SEO说明" class="layui-textarea" >{$WEB_DESCRIPTION}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">版权信息</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="web_copyright" required  lay-verify="required" placeholder="请输入版权信息" autocomplete="off" class="layui-input" value="{$WEB_COPYRIGHT}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">ICP备案号</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="web_tcp" required placeholder="请输入ICP备案号" autocomplete="off" class="layui-input" value="{$WEB_TCP}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">统计代码</label>
+                            <div class="layui-input-block">
+                                <textarea type="text" name="web_tongji" placeholder="请输入统计代码" autocomplete="off" class="layui-textarea">{$WEB_TONGJI}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="button" lay-submit lay-filter="confirm" class="layui-btn" value="提交">
+                                <input type="button" class="layui-btn layui-btn-primary" value="重置">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-field-box">
+                    <form class="layui-form" action="" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">关闭站点</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="open" value="1" checked title="打开">
+                                <input type="radio" name="open" value="2" title="关闭">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">关站提示</label>
+                            <div class="layui-input-block">
+                                <textarea type="textarea" name="web_title" required  lay-verify="required" placeholder="站点维护中，请稍等一会..." value="" autocomplete="off" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-tab-item">配置内容待定</div>
+            <div class="layui-tab-item">配置内容待定</div>
+            <div class="layui-tab-item">
+                <div class="layui-field-box">
+                    <form class="layui-form" action="" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">sql文件大小</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="web_title" required  lay-verify="required" placeholder="" value="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="button" lay-submit lay-filter="confirm" class="layui-btn" value="保存">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+    <script>
+        layui.config({
+            base:"{:C(JS_BASE_PATH)}"
+        }).use(['form','func','layer','element'], function(){
+            var form = layui.form(),
+                $ = layui.jquery,
+                func = layui.func,
+                layer = layui.layer,
+                element = layui.element();
+
+            //监听提交
+            form.on('submit(confirm)', function(data){
+                func.ajax("{:U('set')}",data.field);
+            });
+        });
+    </script>
+</block>
